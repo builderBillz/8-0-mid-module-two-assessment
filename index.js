@@ -6,6 +6,12 @@
 const exampleMovies = require("./movies");
 // Do not change the line above.
 
+// created a helper function for all my error throws
+const error = (movies) => {
+  if(!movies.length){
+  throw "error no movies entered"}
+}
+
 /**
  * getAllMovieTitles()
  * -----------------------------
@@ -30,7 +36,15 @@ const exampleMovies = require("./movies");
       "James and the Giant Peach",
     ];
  */
-function getAllMovieTitles() {}
+
+
+const getAllMovieTitles = (movies) => {
+  
+  error(movies)
+  
+  return movies.map((movie) => movie.title)
+} 
+
 
 /**
  * checkIfAnyMovieHasRating()
@@ -52,9 +66,7 @@ function getAllMovieTitles() {}
  */
 function checkIfAnyMovieHasRating(movies, ratings = "G") {
   
-  if(!movies.length){
-    throw "error no movies entered"
-  }
+  error(movies)
 
   return movies.some(movie => movie.rated === ratings)   
   
@@ -78,9 +90,7 @@ function checkIfAnyMovieHasRating(movies, ratings = "G") {
  */
 function findById(movies, id) {
 
-  if(!movies.length){
-    throw "error no movies entered"
-  }
+  error(movies)
 
   return movies.find(movie => movie.imdbID === id) || null
 }
@@ -109,9 +119,7 @@ function findById(movies, id) {
  */
 function filterByGenre(movies, genre) {
 
-  if(!movies.length){
-    throw "error no movies entered"
-  }
+  error(movies)
 
   return movies.filter ((movie) => (movie.genre.toLowerCase()).includes(genre.toLowerCase()))
 }
@@ -142,9 +150,7 @@ function filterByGenre(movies, genre) {
  */
 function getAllMoviesReleasedAtOrBeforeYear(movies, year) {
 
-  if(!movies.length){
-    throw "error no movies entered"
-  }
+  error(movies)
 
   return movies.filter((movie) => {
   let releaseYear = Number(movie.released.substr(7))
@@ -179,20 +185,19 @@ function getAllMoviesReleasedAtOrBeforeYear(movies, year) {
  */
 function getRottenTomatoesScoreByMovie(movies) {
 
-  if(!movies.length){
-    throw "error no movies entered"
-  }
+  error(movies)
   
   return movies.map((movie) => {
-    
+    // created an empty object to hold the key/value pair that will be at each index
     let titleScore = {}
-    
+    // used .find to isolate the object which hold rotten tomatoes score    
     let rottenScore = movie.ratings.find ((score) =>{
      return score.source === "Rotten Tomatoes"
     })
-
+    // now that I have the object i created a variable to hold the value of the rotten tomatoes score percentage
     let rating = rottenScore.value
     
+    //title will be the key and the value of rating will now be the value of that key within each index of the new array of objects
     titleScore[movie.title] = rating
     
     return  titleScore
